@@ -130,7 +130,7 @@ $imageFiles = getImagesFromS3($s3Client, $bucketName, $prefix, $imageExtensions)
                                 <li><a href="<?php echo getenv('GITHUB_URL') ?: 'https://github.com/jkjoy'; ?>" class="icon fa-github"><span class="label">GitHub</span></a></li>
                                 <li><a href="<?php echo getenv('DRIBBBLE_URL') ?: '#'; ?>" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
                                 <li><a href="<?php echo getenv('LINKEDIN_URL') ?: '#'; ?>" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                                <li><a href="<?php echo getenv('MASTODON_URL') ?: 'https://jiong.us/@sun'; ?>" class="icon fa-mastodon"><span class="label">Mastodon</span></a></li>
+                                <li><a href="<?php echo getenv('MASTODON_URL') ?: 'https://jiong.us/@sun'; ?>" class="icon fa-brands fa-mastodon"><span class="label">Mastodon</span></a></li>
                             </ul>
                         </section>
                         <p class="copyright">

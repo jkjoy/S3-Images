@@ -19,7 +19,7 @@ $s3Client = new S3Client([
 ]);
 
 $bucketName = getenv('S3_BUCKET_NAME') ?: ''; // 从环境变量读取存储桶名称
-$prefix = ''; // 可选：指定存储桶中的文件夹路径
+$prefix = getenv('S3_PREFIX') ?: ''; // 可选：指定存储桶中的文件夹路径
 $cdnDomain = getenv('CDN_DOMAIN') ?: ''; // 从环境变量读取 CDN 域名
 
 // 支持的图片扩展名

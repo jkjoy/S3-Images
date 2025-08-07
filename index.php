@@ -25,6 +25,17 @@ $cdnDomain = getenv('CDN_DOMAIN') ?: ''; // 从环境变量读取 CDN 域名
 // 支持的图片扩展名
 $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
 
+// 清理文件名函数
+function cleanFileName($key, $prefix = '') {
+    // 去除前缀（如果指定）
+    if (!empty($prefix) && strpos($key, $prefix) === 0) {
+        $key = substr($key, strlen($prefix));
+    }
+    // 使用 pathinfo 提取文件名（不含扩展名）
+    $pathInfo = pathinfo($key);
+    return $pathInfo['filename'];
+}
+
 // 获取 S3 存储桶中的文件列表
 function getImagesFromS3($s3Client, $bucketName, $prefix, $imageExtensions) {
     $images = [];
@@ -40,6 +51,7 @@ function getImagesFromS3($s3Client, $bucketName, $prefix, $imageExtensions) {
             if (in_array($extension, $imageExtensions)) {
                 $images[] = [
                     'Key' => $file,
+                    'CleanName' => cleanFileName($file, $prefix), 
                     'LastModified' => $object['LastModified']
                 ];
             }
@@ -102,12 +114,13 @@ $imageFiles = getImagesFromS3($s3Client, $bucketName, $prefix, $imageExtensions)
                 foreach ($imageFiles as $image) {
                     $imageUrl = getImageUrl($s3Client, $bucketName, $image['Key'], $cdnDomain);
                     $lastModified = $image['LastModified']->format('Y-m-d H:i:s');
+                    $cleanName = $image['CleanName']; // 使用清理后的文件名
                     if ($imageUrl) {
                         echo '
                         <article class="thumb">
                             <a href="' . htmlspecialchars($imageUrl) . '" class="image"><img src="' . htmlspecialchars($imageUrl) . '" loading="lazy" /></a>
-                            <h2>' . htmlspecialchars($image['Key']) . '</h2>
-                            <p>最后修改时间: ' . htmlspecialchars($lastModified) . '.</p>
+                            <h2>' . htmlspecialchars($cleanName) . '</h2>
+                            <p>上传时间: ' . htmlspecialchars($lastModified) . '</p>
                         </article>
                         ';
                     }
